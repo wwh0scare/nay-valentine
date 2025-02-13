@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dessert</title>
+    <link rel="stylesheet" href="css/dessert.css" />
+    <style>
+      /* Posisi tombol di kanan bawah */
+      .music-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .music-controls button {
+        background-color: transparent;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .music-controls button:hover {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dessertquestion"><b>Which dessert we eatin?</b></div>
+
+    <div class="dessert-selection">
+      <div class="dessert-item">
+        <img src="food/coffee.jpeg" alt="coffee" />
+        <label><input type="checkbox" name="dessert" value="boba" /> coffee</label>
+      </div>
+      <div class="dessert-item">
+        <img src="food/ice.jpeg" alt="ice" />
+        <label><input type="checkbox" name="dessert" value="ice" /> ice cream</label>
+      </div>
+      <div class="dessert-item">
+        <img src="food/dessert.jpeg" alt="dessert" />
+        <label><input type="checkbox" name="dessert" value="che" /> dessert</label>
+      </div>
+      <div class="dessert-item">
+        <img src="food/mochi.jpeg" alt="mochi" />
+        <label><input type="checkbox" name="dessert" value="mochi" /> mochi</label>
+      </div>
+      <div class="dessert-item">
+        <img src="food/churro.jpeg" alt="churro" />
+        <label><input type="checkbox" name="dessert" value="churro" /> random bun</label>
+      </div>
+      <div class="dessert-item">
+        <img src="food/taiyaki.jpeg" alt="taiyaki" />
+        <label><input type="checkbox" name="dessert" value="taiyaki" /> taiyaki</label>
+      </div>
+    </div>
+    
+    <button class="button" onclick="location.href='activities.html'">Continueee</button>
+
+    <!-- Kontrol Musik -->
+    <div class="music-controls">
+      <audio id="background-music" loop>
+        <source src="music.mp3" type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+
+      <button id="play-button" onclick="toggleMusic()">Stop Music</button>
+    </div>
+
+    <script>
+      // Mendapatkan elemen audio dan tombol
+      const audio = document.getElementById('background-music');
+      const playButton = document.getElementById('play-button');
+
+      // Memeriksa status musik menggunakan localStorage
+      if (localStorage.getItem('musicPlaying') === 'true') {
+        audio.play();
+        playButton.textContent = 'Stop Music';
+      }
+
+      // Fungsi untuk mengontrol pemutaran musik
+      function toggleMusic() {
+        if (audio.paused) {
+          audio.play();
+          localStorage.setItem('musicPlaying', 'true');
+          playButton.textContent = 'Stop Music';
+        } else {
+          audio.pause();
+          localStorage.setItem('musicPlaying', 'false');
+          playButton.textContent = 'Play Music';
+        }
+      }
+
+      // Pastikan musik tetap berjalan saat halaman berganti
+      window.addEventListener('beforeunload', function () {
+        if (!audio.paused) {
+          localStorage.setItem('musicPlaying', 'true');
+        }
+      });
+    </script>
+  </body>
+</html>

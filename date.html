@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date</title>
+    <link rel="stylesheet" href="css/date.css" />
+    <style>
+      /* Posisi tombol musik di pojok kanan bawah */
+      .music-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+      }
+      .music-controls button {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background: #ff4081;
+        color: white;
+        font-weight: bold;
+      }
+      .music-controls button:hover {
+        background: #e91e63;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 title="choose a date">Are you free on ...</h1>
+    <form class="form-group">
+      <label>Which day: (select a date)</label>
+      <div>
+        <input type="date" />
+        <button class="button" type="submit" formaction="food.html">
+          Submit
+        </button>
+      </div>
+    </form>
+
+    <!-- Musik -->
+    <audio id="bgMusic" loop>
+      <source src="music.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- Tombol Play dan Stop -->
+    <div class="music-controls">
+      <button id="playMusic">▶ Play</button>
+      <button id="stopMusic">⏹ Stop</button>
+    </div>
+
+    <script>
+      // Ambil elemen audio & tombol
+      const bgMusic = document.getElementById("bgMusic");
+      const playButton = document.getElementById("playMusic");
+      const stopButton = document.getElementById("stopMusic");
+
+      // Coba autoplay saat halaman dimuat
+      document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem("musicPlaying") === "true") {
+          bgMusic.play().catch(() => {
+            console.log("Autoplay dicegah oleh browser. User harus klik tombol play.");
+          });
+        }
+      });
+
+      // Fungsi Play Music
+      playButton.addEventListener("click", function () {
+        bgMusic.play();
+        localStorage.setItem("musicPlaying", "true"); // Simpan status
+      });
+
+      // Fungsi Stop Music
+      stopButton.addEventListener("click", function () {
+        bgMusic.pause();
+        bgMusic.currentTime = 0; // Reset lagu ke awal
+        localStorage.setItem("musicPlaying", "false"); // Simpan status
+      });
+
+      // Pastikan musik tetap berjalan setelah reload halaman
+      bgMusic.addEventListener("play", function () {
+        localStorage.setItem("musicPlaying", "true");
+      });
+
+      bgMusic.addEventListener("pause", function () {
+        localStorage.setItem("musicPlaying", "false");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naya's Vale Gift</title>
+    <link rel="stylesheet" href="css/valentine.css" />
+    <style>
+      /* Posisi tombol musik di pojok kanan bawah */
+      .music-controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+      }
+      .music-controls button {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background: #ff4081;
+        color: white;
+        font-weight: bold;
+      }
+      .music-controls button:hover {
+        background: #e91e63;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="valentineQuestion"><b>Will you be my valentine?</b></div>
+    <button class="answerButton" id="yesButton" onclick="location.href='thankyou.html'">
+      Yes
+    </button>
+    <button class="answerButton" id="noButton">No</button>
+    <br />
+    <img src="please.png" height="498px" width="150px" alt="cat asking question" class="responsive" />
+
+    <!-- Musik -->
+    <audio id="bgMusic" loop>
+      <source src="music.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <!-- Tombol Play dan Stop -->
+    <div class="music-controls">
+      <button id="playMusic">▶ Play</button>
+      <button id="stopMusic">⏹ Stop</button>
+    </div>
+
+    <script>
+      // Ambil elemen audio & tombol
+      const bgMusic = document.getElementById("bgMusic");
+      const playButton = document.getElementById("playMusic");
+      const stopButton = document.getElementById("stopMusic");
+
+      // Coba autoplay saat halaman dibuka
+      document.addEventListener("DOMContentLoaded", function () {
+        if (localStorage.getItem("musicPlaying") === "true") {
+          bgMusic.play().catch(() => {
+            console.log("Autoplay dicegah oleh browser. User harus klik tombol play.");
+          });
+        }
+      });
+
+      // Fungsi Play Music
+      playButton.addEventListener("click", function () {
+        bgMusic.play();
+        localStorage.setItem("musicPlaying", "true"); // Simpan status
+      });
+
+      // Fungsi Stop Music
+      stopButton.addEventListener("click", function () {
+        bgMusic.pause();
+        bgMusic.currentTime = 0; // Reset lagu ke awal
+        localStorage.setItem("musicPlaying", "false"); // Simpan status
+      });
+
+      // Pastikan musik tetap berjalan setelah reload halaman
+      bgMusic.addEventListener("play", function () {
+        localStorage.setItem("musicPlaying", "true");
+      });
+
+      bgMusic.addEventListener("pause", function () {
+        localStorage.setItem("musicPlaying", "false");
+      });
+
+      // Script untuk tombol "No" agar teks berubah & "Yes" membesar
+      const messages = [
+        "No", "Are you sure?", "Are you really sure??",
+        "Are you really really sure???", "Think again?",
+        "Don't believe in second chances?", "Why are you being so cold?",
+        "Maybe we can talk about it?", "I am not going to ask again!",
+        "Ok now this is hurting my feelings!", "You are now just being mean!",
+        "Why are you doing this to me?", "Please give me a chance!",
+        "I am begging you to stop!", "Ok, Let's just start over.."
+      ];
+      
+      let clickCount = 0;
+      const noButton = document.getElementById("noButton");
+      const yesButton = document.getElementById("yesButton");
+
+      noButton.addEventListener("click", function () {
+        if (clickCount < messages.length - 1) {
+          clickCount++;
+          noButton.textContent = messages[clickCount];
+        }
+        
+        let currentFontSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+        yesButton.style.fontSize = (currentFontSize + 10) + "px";
+      });
+    </script>
+  </body>
+</html>
